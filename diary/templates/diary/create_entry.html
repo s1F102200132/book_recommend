@@ -1,0 +1,5 @@
+<form method="POST">
+    {% csrf_token %}
+    <textarea name="content" rows="10" cols="50" placeholder="今日の日記を書いてください"></textarea>
+    <button type="submit">投稿する</button>
+</form>
