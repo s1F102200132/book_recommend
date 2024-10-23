@@ -17,8 +17,10 @@ Including another URLconf
 # book_recommendation/urls.py
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponseRedirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('diary/', include('diary.urls')),  # diaryアプリのURLをインクルード
+    path('', lambda request: HttpResponseRedirect('/diary/')),  # ルートURLをdiary/にリダイレクト
 ]
