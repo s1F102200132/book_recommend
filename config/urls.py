@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('diary/', include('diary.urls')),  # diaryアプリのURLをインクルード
     path('', lambda request: HttpResponseRedirect('/diary/')),  # ルートURLをdiary/にリダイレクト
+    
 ]

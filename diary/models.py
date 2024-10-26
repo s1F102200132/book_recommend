@@ -1,16 +1,14 @@
-from django.db import models
-
-# Create your models here.
 # diary/models.py
 from django.db import models
 from django.contrib.auth.models import User
 
 class DiaryEntry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    sentiment = models.CharField(max_length=255, null=True, blank=True)
-    recommended_book = models.CharField(max_length=255, null=True, blank=True)
+    sentiment = models.CharField(max_length=50)
+    recommended_book = models.CharField(max_length=100, default="Not Available")
+
+    created_at = models.DateTimeField(auto_now_add=True)  # 追加部分
 
     def __str__(self):
-        return f"Diary by {self.user} on {self.created_at}"
+        return self.content[:20]

@@ -6,21 +6,26 @@ from .utils import analyze_sentiment, recommend_book_by_sentiment
 #def home(request):
     #return render(request, 'home.html')
 
+def index(request):
+    return render(request, 'diary/index.html')
+    
+
 def create_diary_entry(request):
     if request.method == "POST":
         content = request.POST.get("content")
         sentiment = analyze_sentiment(content)
         recommended_book = recommend_book_by_sentiment(sentiment)
-        
+
         diary_entry = DiaryEntry.objects.create(
-            user=request.user,
+            user=request.user if request.user.is_authenticated else None,
             content=content,
             sentiment=sentiment,
             recommended_book=recommended_book
         )
-        return redirect('diary:entry_detail', pk=diary_entry.pk)
+        return redirect('diary:diary_list')
     
     return render(request, 'diary/create_entry.html')
+
 
 def diary_entry_detail(request, pk):
     diary_entry = DiaryEntry.objects.get(pk=pk)

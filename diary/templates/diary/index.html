@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>Book Recommend!</h1>
+  <p>You can submit articles from the following form.</p>
+  <form action="{% url 'diary:create_entry' %}" method="post">
+    {% csrf_token %}
+    <div>
+      <label for="titleInput">題名</label>
+      <input id="titleInput" name="title" type="text" placeholder="Input title">
+    </div>
+    <div>
+      <label for="textInput">日記の内容</label>
+      <textarea id="textInput" name="content" rows="3"></textarea>
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</body>
+</html>

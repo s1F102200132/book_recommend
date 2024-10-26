@@ -1,6 +1,23 @@
-<h1>日記一覧</h1>
-<ul>
-  {% for entry in entries %}
-    <li><a href="{% url 'entry_detail' entry.pk %}">{{ entry.title }}</a></li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>Diary List</h1>
+  {% if entries %}
+    <ul>
+      {% for entry in entries %}
+        <li>
+          <p>{{ entry.content }}</p>
+          <form action="{% url 'diary:entry_detail' entry.pk %}" method="get">
+            <button type="submit">感情分析を行う</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No entries available.</p>
+  {% endif %}
+</body>
+</html>
