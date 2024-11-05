@@ -1,15 +1,46 @@
 # diary/utils.py
-from textblob import TextBlob
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from googletrans import Translator
+from deep_translator import GoogleTranslator
 
-def analyze_sentiment(content):
-    analysis = TextBlob(content)
-    if analysis.sentiment.polarity > 0:
-        return "Positive"
-    elif analysis.sentiment.polarity == 0:
-        return "Neutral"
-    else:
-        return "Negative"
+# モデルとトークナイザーの設定
+model_name = "textattack/bert-base-uncased-SST-2"  # 感情分析モデル
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+# 翻訳用の初期化
+translator = Translator()
+
+def analyze_sentiment(text):
+    try:
+        # テキストを翻訳
+        translated_text = GoogleTranslator(source='ja', target='en').translate(text)
+        print(f"翻訳文: {translated_text}")
+    except Exception as e:
+        print(f"翻訳中にエラーが発生しました: {e}")
+        return None, 0  # エラーの場合はNoneと0を返す
+
+    # テキストのトークナイズ
+    inputs = tokenizer(translated_text, return_tensors="pt")
     
+    # モデルを推論モードに設定
+    with torch.no_grad():
+        logits = model(**inputs).logits
+
+    # ソフトマックス関数を使って確信度を計算
+    probabilities = torch.nn.functional.softmax(logits, dim=-1)
+    sentiment = torch.argmax(probabilities).item()
+    confidence = probabilities[0][sentiment].item()
+
+    # 感情のラベルを設定
+    if sentiment == 1:  # positive
+        label = "POSITIVE"
+    else:  # negative
+        label = "NEGATIVE"
+
+    return label, confidence
+
 
 # diary/utils.py
 import requests

@@ -29,7 +29,18 @@ def create_diary_entry(request):
 
 def diary_entry_detail(request, pk):
     diary_entry = DiaryEntry.objects.get(pk=pk)
-    return render(request, 'diary/entry_detail.html', {'diary_entry': diary_entry})
+    
+    # 感情分析を実行
+    sentiment, confidence = analyze_sentiment(diary_entry.content)
+    
+    # 結果をテンプレートに渡す
+    emotion_scores = {sentiment: confidence}  # 感情スコアの辞書を作成
+
+    return render(request, 'diary/entry_detail.html', {
+        'diary_entry': diary_entry,
+        'emotion_scores': emotion_scores,
+    })
+
 
 def diary_list(request):
     entries = DiaryEntry.objects.all()  # すべての日記を取得
