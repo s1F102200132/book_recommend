@@ -1,7 +1,7 @@
 # diary/views.py
 from django.shortcuts import render, redirect
 from .models import DiaryEntry
-from .utils import analyze_sentiment, recommend_book_by_sentiment
+from .utils import analyze_sentiment, recommend_book_by_sentiment, get_amazon_reviews
 
 #def home(request):
     #return render(request, 'home.html')
@@ -28,18 +28,36 @@ def create_diary_entry(request):
 
 
 def diary_entry_detail(request, pk):
+    # 日記エントリーを取得
     diary_entry = DiaryEntry.objects.get(pk=pk)
-    
-    # 感情分析を実行
-    sentiment, confidence = analyze_sentiment(diary_entry.content)
-    
-    # 結果をテンプレートに渡す
-    emotion_scores = {sentiment: confidence}  # 感情スコアの辞書を作成
 
-    return render(request, 'diary/entry_detail.html', {
+    # 日記の感情分析
+    diary_sentiment, confidence = analyze_sentiment(diary_entry.content)
+
+    # 日記の感情に基づいて推薦された本を取得
+    recommended_books = recommend_book_by_sentiment(diary_sentiment)
+
+    # 書籍のレビューを取得し、レビューの感情分析を行う
+    review_sentiment_results = []
+    for book in recommended_books:
+        reviews = get_amazon_reviews(book)
+        for review in reviews:
+            review_sentiment, review_confidence = analyze_sentiment(review)
+            review_sentiment_results.append({
+                "review": review,
+                "sentiment": review_sentiment,
+                "confidence": review_confidence
+            })
+
+    # テンプレートに渡すコンテキスト
+    context = {
         'diary_entry': diary_entry,
-        'emotion_scores': emotion_scores,
-    })
+        'diary_sentiment': diary_sentiment,
+        'recommended_books': recommended_books,
+        'review_sentiment_results': review_sentiment_results,
+    }
+
+    return render(request, 'diary/entry_detail.html', context)
 
 
 def diary_list(request):
