@@ -5,9 +5,18 @@ from googletrans import Translator
 from deep_translator import GoogleTranslator
 
 # モデルとトークナイザーの設定
-model_name = "textattack/bert-base-uncased-SST-2"  # 感情分析モデル
+model_name = "monologg/bert-base-cased-goemotions-original"  # 感情分析モデル
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+# GoEmotionsのラベルリスト
+goemotions_labels = [
+    "admiration", "amusement", "anger", "annoyance", "approval", "caring", 
+    "confusion", "curiosity", "desire", "disappointment", "disapproval", 
+    "disgust", "embarrassment", "excitement", "fear", "gratitude", "grief", 
+    "joy", "love", "nervousness", "optimism", "pride", "realization", 
+    "relief", "remorse", "sadness", "surprise", "neutral"
+]
 
 # 翻訳用の初期化
 translator = Translator()
@@ -33,11 +42,8 @@ def analyze_sentiment(text):
     sentiment = torch.argmax(probabilities).item()
     confidence = probabilities[0][sentiment].item()
 
-    # 感情のラベルを設定
-    if sentiment == 1:  # positive
-        label = "POSITIVE"
-    else:  # negative
-        label = "NEGATIVE"
+    # 感情ラベルの取得
+    label = goemotions_labels[sentiment]
 
     return label, confidence
 
@@ -59,9 +65,21 @@ def get_amazon_reviews(book_title):
 
 def recommend_book_by_sentiment(sentiment):
     # シンプルな例: 感情に応じた書籍タイトルを指定（後で改善）
-    if sentiment == "Positive":
-        return "The Power of Positive Thinking"
-    elif sentiment == "Negative":
-        return "When Things Fall Apart"
+    if sentiment == "joy":
+        return "The Happiness Project"
+    elif sentiment == "sadness":
+        return "When Breath Becomes Air"
+    elif sentiment == "anger":
+        return "Anger: Wisdom for Cooling the Flames"
+    elif sentiment == "fear":
+        return "Feel the Fear and Do It Anyway"
+    elif sentiment == "love":
+        return "The 5 Love Languages"
+    elif sentiment == "disgust":
+        return "The Gift of Fear"
+    elif sentiment == "surprise":
+        return "Surprised by Joy"
+    elif sentiment == "anticipation":
+        return "The Power of Now"
     else:
         return "The Subtle Art of Not Giving a F*ck"
