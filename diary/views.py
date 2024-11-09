@@ -44,6 +44,7 @@ def diary_entry_detail(request, pk):
         for review in reviews:
             review_sentiment, review_confidence = analyze_sentiment(review)
             review_sentiment_results.append({
+                "book_title": book,
                 "review": review,
                 "sentiment": review_sentiment,
                 "confidence": review_confidence
