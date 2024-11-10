@@ -15,13 +15,21 @@
 
   <!-- 推薦された本 -->
   <h3>推薦された本</h3>
-  <p>{{ recommended_books }}</p>
+  {% if recommended_books %}
+    <ul>
+      {% for book in recommended_books %}
+        <li>{{ book }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>おすすめの本はありません。</p>
+  {% endif %}
 
   <!-- レビューの感情分析結果 -->
   <h3>レビューの感情分析結果</h3>
-  {% for review, sentiment, confidence in review_sentiment_results %}
-    <p><strong>レビュー:</strong> {{ review }}</p>
-    <p><strong>感情分析:</strong> {{ sentiment }} (Confidence: {{ confidence }})</p>
+  {% for review_result in review_sentiment_results %}
+    <p><strong>レビュー:</strong> {{ review_result.review }}</p>
+    <p><strong>感情分析:</strong> {{ review_result.sentiment }} (Confidence: {{ review_result.confidence }})</p>
   {% endfor %}
 
   <!-- 日記リストページとトップページへのリンク -->

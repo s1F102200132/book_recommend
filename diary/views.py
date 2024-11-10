@@ -1,21 +1,19 @@
-# diary/views.py
 from django.shortcuts import render, redirect
 from .models import DiaryEntry
-from .utils import analyze_sentiment, recommend_book_by_sentiment, get_amazon_reviews
-
-#def home(request):
-    #return render(request, 'home.html')
+from .utils import analyze_sentiment, recommend_book_by_sentiment
 
 def index(request):
     return render(request, 'diary/index.html')
-    
 
 def create_diary_entry(request):
     if request.method == "POST":
         content = request.POST.get("content")
-        sentiment = analyze_sentiment(content)
+        sentiment, confidence = analyze_sentiment(content)  # 日記の感情分析
+
+        # 感情分析に基づいて推薦された本を取得
         recommended_book = recommend_book_by_sentiment(sentiment)
 
+        # 日記エントリーを保存
         diary_entry = DiaryEntry.objects.create(
             user=request.user if request.user.is_authenticated else None,
             content=content,
@@ -37,10 +35,26 @@ def diary_entry_detail(request, pk):
     # 日記の感情に基づいて推薦された本を取得
     recommended_books = recommend_book_by_sentiment(diary_sentiment)
 
-    # 書籍のレビューを取得し、レビューの感情分析を行う
+    # 手動で設定したレビューリスト
+    # 今回はテスト用のレビューを数個手動で設定している
+    book_reviews = {
+        "The Happiness Project": [
+            "This book is full of practical advice and uplifting insights about how to live a happier life.",
+            "It's an inspiring read that really makes you think about your own life and happiness."
+        ],
+        "When Breath Becomes Air": [
+            "A deeply emotional and profound book, truly life-changing.",
+            "The author reflects on mortality and the meaning of life in a very touching way."
+        ],
+        "Anger: Wisdom for Cooling the Flames": [
+            "A very insightful book on understanding and managing anger.",
+            "It offers practical tools for controlling anger in difficult situations."
+        ]
+    }
+
+    # レビューの感情分析を行い、結果を集める
     review_sentiment_results = []
-    for book in recommended_books:
-        reviews = get_amazon_reviews(book)
+    for book, reviews in book_reviews.items():
         for review in reviews:
             review_sentiment, review_confidence = analyze_sentiment(review)
             review_sentiment_results.append({
