@@ -1,5 +1,7 @@
 # diary/utils.py
 from textblob import TextBlob
+from bookapp.utils import get_asin_from_amazon_2, get_page_from_amazon
+
 
 def analyze_sentiment(content):
     analysis = TextBlob(content)

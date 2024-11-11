@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>Diary List</title>
 </head>
 <body>
   <h1>Diary List</h1>
@@ -10,6 +11,7 @@
       {% for entry in entries %}
         <li>
           <p>{{ entry.content }}</p>
+          <!-- 'diary:entry_detail' のURLが設定されているのでそのまま保持 -->
           <form action="{% url 'diary:entry_detail' entry.pk %}" method="get">
             <button type="submit">感情分析を行う</button>
           </form>

@@ -12,3 +12,13 @@ class DiaryEntry(models.Model):
 
     def __str__(self):
         return self.content[:20]
+    
+from django.db import models
+
+class Entry(models.Model):
+    content = models.TextField()  # 例としてcontentフィールドがある場合
+    # 他の必要なフィールドをここに追加
+
+    def __str__(self):
+        return self.content[:50]  # エントリの一部を返す
+
