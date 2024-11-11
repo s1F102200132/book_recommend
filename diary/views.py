@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import DiaryEntry
 from .utils import analyze_sentiment, recommend_book_by_sentiment
+from collections import Counter
+import matplotlib.pyplot as plt
+import io
+import base64
 
 def index(request):
     return render(request, 'diary/index.html')
@@ -23,6 +27,52 @@ def create_diary_entry(request):
         return redirect('diary:diary_list')
     
     return render(request, 'diary/create_entry.html')
+
+
+def sentiment_dashboard(request):
+    # ユーザーの日記エントリを取得
+    entries = DiaryEntry.objects.filter(user=request.user)
+
+    # 感情ごとの集計
+    sentiments = []
+    for entry in entries:
+        sentiment, confidence = analyze_sentiment(entry.content)  # analyze_sentimentを呼び出す
+        entry.sentiment = sentiment  # 感情を動的に設定
+        entry.confidence = confidence  # 信頼度を設定
+        sentiments.append(sentiment)
+
+    sentiment_counts = Counter(sentiments)
+
+    # 統計情報
+    total_entries = len(entries)
+    positive_count = sentiment_counts.get('positive', 0)
+    negative_count = sentiment_counts.get('negative', 0)
+    neutral_count = sentiment_counts.get('neutral', 0)
+
+    # グラフ作成（Matplotlibを使用）
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.pie([positive_count, negative_count, neutral_count], 
+           labels=['Positive', 'Negative', 'Neutral'], 
+           autopct='%1.1f%%', startangle=90, colors=['#4CAF50', '#F44336', '#FFC107'])
+    ax.axis('equal')  # 円形に表示
+
+    # グラフを画像として保存
+    img_buffer = io.BytesIO()
+    plt.savefig(img_buffer, format='png')
+    img_buffer.seek(0)
+    graph_url = base64.b64encode(img_buffer.read()).decode('utf-8')
+
+    # ダッシュボードの統計情報とグラフをテンプレートに渡す
+    context = {
+        'total_entries': total_entries,
+        'positive_count': positive_count,
+        'negative_count': negative_count,
+        'neutral_count': neutral_count,
+        'graph_url': graph_url,
+        'entries': entries,
+    }
+
+    return render(request, 'diary/sentiment_dashboard.html', context)
 
 
 def diary_entry_detail(request, pk):
