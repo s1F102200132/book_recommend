@@ -1,0 +1,30 @@
+<!-- diary/sentiment_dashboard.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>感情分析ダッシュボード</title>
+</head>
+<body>
+    <h1>感情分析ダッシュボード</h1>
+    <img src="{{ image_path }}" alt="感情グラフ">
+    
+    <p>日記エントリ数: {{ total_entries }}</p>
+    <p>ポジティブな感情: {{ positive_count }}</p>
+    <p>ネガティブな感情: {{ negative_count }}</p>
+    <p>ニュートラルな感情: {{ neutral_count }}</p>
+
+    <h2>感情分析のグラフ</h2>
+    <img src="data:image/png;base64,{{ graph_url }}" alt="Sentiment Analysis Graph">
+
+    <h2>過去の日記エントリ</h2>
+    <ul>
+        {% for entry in entries %}
+            <li>
+                {{ entry.content }} - 感情: {{ entry.sentiment }} (信頼度: {{ entry.confidence }})
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'diary:top_page' %}">トップページに戻る</a>
+</body>
+</html>
