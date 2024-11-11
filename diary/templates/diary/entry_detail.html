@@ -12,14 +12,12 @@
     <h2>日記の内容</h2>
     <p>{{ diary_entry.content }}</p>
 
-    <h3>感情分析: <span class="badge badge-info">{{ diary_sentiment }}</span></h3>
+    <h3>感情分析: <span class="badge badge-info">{{ diary_entry.sentiment }}</span></h3>
 
     <h3>推薦された本</h3>
-    {% if recommended_books %}
+    {% if diary_entry.recommended_book %}
       <ul class="list-group mb-4">
-        {% for book in recommended_books %}
-          <li class="list-group-item">{{ book }}</li>
-        {% endfor %}
+        <li class="list-group-item">{{ diary_entry.recommended_book }}</li>
       </ul>
     {% else %}
       <p>おすすめの本はありません。</p>
@@ -29,7 +27,7 @@
     {% for review_result in review_sentiment_results %}
       <div class="border rounded p-2 mb-3">
         <p><strong>レビュー:</strong> {{ review_result.review }}</p>
-        <p><strong>感情分析:</strong> {{ review_result.sentiment }} (Confidence: {{ review_result.confidence }})</p>
+        <p><strong>感情分析:</strong> {{ review_result.sentiment }} (信頼度: {{ review_result.confidence }})</p>
       </div>
     {% endfor %}
 

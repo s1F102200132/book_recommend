@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from .models import DiaryEntry
 from .utils import analyze_sentiment, recommend_book_by_sentiment
 
-
 def index(request):
     return render(request, 'diary/index.html')
 
@@ -24,7 +23,6 @@ def create_diary_entry(request):
         return redirect('diary:diary_list')
     
     return render(request, 'diary/create_entry.html')
-
 
 def diary_entry_detail(request, pk):
     # 日記エントリーを取得
@@ -74,7 +72,7 @@ def diary_entry_detail(request, pk):
 
     return render(request, 'diary/entry_detail.html', context)
 
-
 def diary_list(request):
-    entries = DiaryEntry.objects.all()  # すべての日記を取得
+    # 新しい日記エントリーを上に表示するように変更
+    entries = DiaryEntry.objects.all().order_by('-created_at')  # created_atフィールドで降順にソート
     return render(request, 'diary/diary_list.html', {'entries': entries})
