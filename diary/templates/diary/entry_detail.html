@@ -1,8 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>感情分析結果</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">感情分析結果</h1>
+    
+    <h2>日記の内容</h2>
+    <p>{{ diary_entry.content }}</p>
 
-<h2>日記の内容</h2>
-<p>{{ diary_entry.content }}</p>
+    <h3>感情分析: <span class="badge badge-info">{{ diary_entry.sentiment }}</span></h3>
 
-<h3>感情分析: {{ diary_entry.sentiment }}</h3>
+    <h3>推薦された本</h3>
+    {% if diary_entry.recommended_book %}
+      <ul class="list-group mb-4">
+        <li class="list-group-item">{{ diary_entry.recommended_book }}</li>
+      </ul>
+    {% else %}
+      <p>おすすめの本はありません。</p>
+    {% endif %}
 
-<h3>推薦された本</h3>
-<p>{{ diary_entry.recommended_book }}</p>
+    <h3>レビューの感情分析結果</h3>
+    {% for review_result in review_sentiment_results %}
+      <div class="border rounded p-2 mb-3">
+        <p><strong>レビュー:</strong> {{ review_result.review }}</p>
+        <p><strong>感情分析:</strong> {{ review_result.sentiment }} (信頼度: {{ review_result.confidence }})</p>
+      </div>
+    {% endfor %}
+
+    <div class="text-center mt-4">
+      <a href="{% url 'diary:diary_list' %}" class="btn btn-secondary">日記リストに戻る</a>
+      <a href="{% url 'diary:top_page' %}" class="btn btn-secondary">トップページへ戻る</a>
+    </div>
+  </div>
+</body>
+</html>
