@@ -4,27 +4,87 @@
   <meta charset="UTF-8">
   <title>Book Recommend!</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0f8ff;
+      font-family: 'Poppins', sans-serif;
+    }
+    h1 {
+      font-weight: 600;
+      color: #2d2d2d;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .form-group label {
+      font-weight: bold;
+      color: #4e4e4e;
+    }
+    .form-control {
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-radius: 30px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border-radius: 30px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background-color: #495057;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .bg-custom {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+    }
+    .footer-link {
+      font-size: 14px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
   <div class="container mt-5">
-    <h1 class="text-center mb-4">Book Recommend!</h1>
-    <p class="text-center">You can submit articles from the following form.</p>
-    <form action="{% url 'diary:create_entry' %}" method="post" class="bg-white p-4 rounded shadow-sm">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="titleInput">題名</label>
-        <input id="titleInput" name="title" type="text" class="form-control" placeholder="Input title">
+    <div class="card bg-custom">
+      <h1 class="text-center mb-4">Book Recommend!</h1>
+      <p class="text-center mb-4">お疲れ様！今日の日記を感じたままに書いてください<form action="{% url 'diary:create_entry' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="titleInput">題名</label>
+          <input id="titleInput" name="title" type="text" class="form-control" placeholder="タイトルを入力" required>
+        </div>
+
+        <div class="form-group">
+          <label for="textInput">日記の内容</label>
+          <textarea id="textInput" name="content" class="form-control" rows="5" placeholder="日記の内容を入力" required></textarea>
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-primary">送信</button>
+        </div>
+      </form>
+
+      <div class="text-center mt-4">
+        <a href="{% url 'diary:diary_list' %}" class="btn btn-secondary">日記リストへ</a>
       </div>
-      <div class="form-group">
-        <label for="textInput">日記の内容</label>
-        <textarea id="textInput" name="content" class="form-control" rows="3" placeholder="Write your diary here"></textarea>
-      </div>
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
-    <div class="text-center mt-3">
-      <a href="{% url 'diary:diary_list' %}" class="btn btn-secondary">日記リストへ</a>
     </div>
   </div>
 </body>
