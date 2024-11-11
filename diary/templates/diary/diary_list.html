@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <title>Diary List</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Diary List</h1>
-  {% if entries %}
-    <ul>
-      {% for entry in entries %}
-        <li>
-          <p>{{ entry.content }}</p>
-          <form action="{% url 'diary:entry_detail' entry.pk %}" method="get">
-            <button type="submit">感情分析を行う</button>
-          </form>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No entries available.</p>
-  {% endif %}
-  <div>
-    <a href="{% url 'diary:top_page' %}">トップページへ戻る</a>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Diary List</h1>
+    {% if entries %}
+      <ul class="list-group">
+        {% for entry in entries %}
+          <li class="list-group-item">
+            <p>{{ entry.content }}</p>
+            <form action="{% url 'diary:entry_detail' entry.pk %}" method="get">
+              <button type="submit" class="btn btn-outline-primary btn-sm">感情分析を行う</button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-center">No entries available.</p>
+    {% endif %}
+    <div class="text-center mt-3">
+      <a href="{% url 'diary:top_page' %}" class="btn btn-secondary">トップページへ戻る</a>
+    </div>
   </div>
 </body>
 </html>
