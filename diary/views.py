@@ -36,7 +36,6 @@ def diary_entry_detail(request, pk):
     recommended_books = recommend_book_by_sentiment(diary_sentiment)
 
     # 手動で設定したレビューリスト
-    # 今回はテスト用のレビューを数個手動で設定している
     book_reviews = {
         "The Happiness Project": [
             "This book is full of practical advice and uplifting insights about how to live a happier life.",
