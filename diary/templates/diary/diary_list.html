@@ -73,6 +73,7 @@
               <form action="{% url 'diary:entry_detail' entry.pk %}" method="get">
                 <button type="submit" class="btn btn-outline-primary btn-sm">感情分析を行う</button>
               </form>
+              <a href="{% url 'diary:delete_entry' entry.pk %}" class="btn btn-outline-danger btn-sm ml-2">削除</a>
             </li>
           {% endfor %}
         </ul>

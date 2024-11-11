@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import DiaryEntry
 from .utils import analyze_sentiment, recommend_book_by_sentiment
 
@@ -76,3 +76,11 @@ def diary_list(request):
     # 新しい日記エントリーを上に表示するように変更
     entries = DiaryEntry.objects.all().order_by('-created_at')  # created_atフィールドで降順にソート
     return render(request, 'diary/diary_list.html', {'entries': entries})
+
+
+def delete_diary_entry(request, pk):
+    diary_entry = get_object_or_404(DiaryEntry, pk=pk)
+    if request.method == "POST":
+        diary_entry.delete()
+        return redirect('diary:diary_list')
+    return render(request, 'diary/confirm_delete.html', {'diary_entry': diary_entry})

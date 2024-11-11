@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Diary Entry</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">日記を削除しますか？</h1>
+    <p class="text-center">本当に削除しますか？この操作は取り消せません。</p>
+    <div class="text-center">
+      <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">削除</button>
+        <a href="{% url 'diary:diary_list' %}" class="btn btn-secondary">キャンセル</a>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
