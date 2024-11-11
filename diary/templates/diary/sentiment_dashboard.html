@@ -1,37 +1,30 @@
+<!-- diary/sentiment_dashboard.html -->
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>感情分析ダッシュボード</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>感情分析ダッシュボード</h1>
-        
-        <h2>統計情報</h2>
-        <p>合計日記エントリー数: {{ total_entries }}</p>
-        <p>ポジティブ: {{ positive_count }}件</p>
-        <p>ネガティブ: {{ negative_count }}件</p>
-        <p>ニュートラル: {{ neutral_count }}件</p>
+    <h1>感情分析ダッシュボード</h1>
+    <img src="{{ image_path }}" alt="感情グラフ">
+    
+    <p>日記エントリ数: {{ total_entries }}</p>
+    <p>ポジティブな感情: {{ positive_count }}</p>
+    <p>ネガティブな感情: {{ negative_count }}</p>
+    <p>ニュートラルな感情: {{ neutral_count }}</p>
 
-        <h3>感情分布グラフ</h3>
-        <img src="data:image/png;base64,{{ graph_url }}" alt="Sentiment Distribution Graph">
+    <h2>感情分析のグラフ</h2>
+    <img src="data:image/png;base64,{{ graph_url }}" alt="Sentiment Analysis Graph">
 
-        <h2>過去の日記履歴</h2>
-        <ul>
-            {% for entry in entries %}
-                <li>
-                    <p><strong>{{ entry.created_at }}</strong></p>
-                    <p>{{ entry.content }}</p>
-                    <p><strong>感情:</strong> {{ entry.sentiment }}</p>
-                    <p><strong>感情分析の信頼度:</strong> {{ entry.confidence }}</p>
-                    <hr>
-                </li>
-            {% empty %}
-                <p>まだ日記がありません。</p>
-            {% endfor %}
-        </ul>
-    </div>
+    <h2>過去の日記エントリ</h2>
+    <ul>
+        {% for entry in entries %}
+            <li>
+                {{ entry.content }} - 感情: {{ entry.sentiment }} (信頼度: {{ entry.confidence }})
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'diary:top_page' %}">トップページに戻る</a>
 </body>
 </html>
