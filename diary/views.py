@@ -4,16 +4,7 @@ from .utils.sentiment_analysis import analyze_sentiment
 
 from .utils import analyze_sentiment, recommend_book_by_sentiment
 
-<<<<<<< HEAD
-from django.shortcuts import render, get_object_or_404
-from django.http import Http404
-from .models import DiaryEntry
 
-#def home(request):
-    #return render(request, 'home.html')
-
-=======
->>>>>>> sentiment_analysis
 def index(request):
     return render(request, 'diary/index.html')
 
@@ -36,17 +27,7 @@ def create_diary_entry(request):
     
     return render(request, 'diary/create_entry.html')
 
-<<<<<<< HEAD
 
-
-def diary_entry_detail(request, pk):
-    try:
-        diary_entry = DiaryEntry.objects.get(pk=pk)
-    except DiaryEntry.DoesNotExist:
-        raise Http404("指定された日記エントリは存在しません。")
-
-    return render(request, 'diary/entry_detail.html', {'diary_entry': diary_entry})
-=======
 def diary_entry_detail(request, pk):
     # 日記エントリーを取得
     diary_entry = DiaryEntry.objects.get(pk=pk)
@@ -94,7 +75,7 @@ def diary_entry_detail(request, pk):
     }
 
     return render(request, 'diary/entry_detail.html', context)
->>>>>>> sentiment_analysis
+
 
 def diary_list(request):
     # 新しい日記エントリーを上に表示するように変更

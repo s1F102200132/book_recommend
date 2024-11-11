@@ -1,24 +1,9 @@
 # diary/utils.py
-<<<<<<< HEAD
-from textblob import TextBlob
-from bookapp.utils import get_asin_from_amazon_2, get_page_from_amazon
 
-
-def analyze_sentiment(content):
-    analysis = TextBlob(content)
-    if analysis.sentiment.polarity > 0:
-        return "Positive"
-    elif analysis.sentiment.polarity == 0:
-        return "Neutral"
-    else:
-        return "Negative"
-    
-# diary/utils.py
-=======
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from deep_translator import GoogleTranslator
->>>>>>> sentiment_analysis
+
 import requests
 from bs4 import BeautifulSoup
 
