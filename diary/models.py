@@ -7,7 +7,6 @@ class DiaryEntry(models.Model):
     content = models.TextField()
     sentiment = models.CharField(max_length=50)
     recommended_book = models.CharField(max_length=100, default="Not Available")
-
     created_at = models.DateTimeField(auto_now_add=True)  # 追加部分
 
     def __str__(self):

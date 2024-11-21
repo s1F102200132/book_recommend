@@ -10,4 +10,5 @@ urlpatterns = [
     path('', views.index, name='top_page'),
     path('diary/', views.diary_list, name='diary_list'),# diary/ へのパス
     path('entry/<int:pk>/delete/', views.delete_diary_entry, name='delete_entry'),  # 削除URL
+    path('calendar/', views.calendar_view, name='calendar'), #カレンダー
 ]

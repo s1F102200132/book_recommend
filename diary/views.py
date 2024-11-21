@@ -84,3 +84,6 @@ def delete_diary_entry(request, pk):
         diary_entry.delete()
         return redirect('diary:diary_list')
     return render(request, 'diary/confirm_delete.html', {'diary_entry': diary_entry})
+
+def calendar_view(request):
+    return render(request, 'diary/calendar.html')  # 修正: diary に変更

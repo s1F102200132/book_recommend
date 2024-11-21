@@ -17,11 +17,10 @@ Including another URLconf
 # book_recommendation/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponseRedirect
+from diary import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('diary/', include('diary.urls')),  # diaryアプリのURLをインクルード
-    path('', lambda request: HttpResponseRedirect('/diary/')),  # ルートURLをdiary/にリダイレクト
-    
+    path('', views.index, name='index'),  # トップページに home ビューを設定
 ]
