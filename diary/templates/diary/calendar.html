@@ -4,13 +4,49 @@
   <meta charset="UTF-8">
   <title>カレンダー</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .highlighted {
+      background-color: #ffcc00; /* 本日の日付のハイライト */
+      color: white;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div class="container mt-5">
     <h1 class="text-center">カレンダー</h1>
-    <div id="calendar-container">
-      <!-- カレンダーの内容はここに表示 -->
+
+    <div class="text-center mb-4">
+      <a href="?year={{ prev_year }}&month={{ prev_month }}" class="btn btn-primary">前月</a>
+      <span>{{ year }}年{{ month }}月</span>
+      <a href="?year={{ next_year }}&month={{ next_month }}" class="btn btn-primary">次月</a>
     </div>
+
+    <div id="calendar-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            {% for weekday in weekdays %}
+              <th>{{ weekday }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for week in calendar_grid %}
+            <tr>
+              {% for day in week %}
+                <td class="{% if day == highlighted_day %}highlighted{% endif %}">
+                  {% if day %}
+                    {{ day }}
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
     <div class="text-center mt-4">
       <a href="{% url 'diary:top_page' %}" class="btn btn-secondary">トップページへ戻る</a>
     </div>
