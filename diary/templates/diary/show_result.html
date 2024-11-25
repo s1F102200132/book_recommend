@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>分析結果</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">分析結果</h2>
+                <p><strong>内容:</strong> {{ entry.content }}</p>
+                <p><strong>感情:</strong> {{ entry.sentiment }}</p>
+                <p><strong>信頼度:</strong> {{ entry.confidence|floatformat:2 }}%</p>
+                <a href="{% url 'diary:diary_list' %}" class="btn btn-primary">戻る</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
